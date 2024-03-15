@@ -4,7 +4,7 @@ def recibir_archivo(cliente, nombre_fichero):
     with open(nombre_fichero, 'wb') as archivo:
         datos = cliente.recv(1024)
         while datos:
-            if "<EOF>" in datos.decode('utf-8'):
+            if b"<EOF>" in datos:
                 archivo.write(datos[:-5]) # Eliminamos EOF
                 break
             archivo.write(datos)
@@ -23,12 +23,13 @@ def iniciar_servidor(HOST, PORT):
 
         if os.path.isfile(nombre_fichero):
             cliente.send('EXISTE'.encode('utf-8'))
-            res = cliente.recv(1024)
+            res = cliente.recv(1024).decode('utf-8')
             if (res != 'SI'):
                 cliente.close()
                 continue
+            os.remove(nombre_fichero)
         else:
-            cliente.send(b'SI')
+            cliente.send('SI'.encode('utf-8'))
         recibir_archivo(cliente, nombre_fichero)
         print(f'Archivo {nombre_fichero} recibido')
         cliente.send(b'Recibido')

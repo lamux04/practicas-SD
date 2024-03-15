@@ -14,6 +14,7 @@ def enviar_archivo(HOST, PORT, ruta_fichero):
             con.close()
             return
         con.send('SI'.encode('utf-8'))
+        respuesta = 'SI'
 
     if respuesta == 'SI':
 
@@ -23,9 +24,10 @@ def enviar_archivo(HOST, PORT, ruta_fichero):
                 if not datos:
                     break
                 con.send(datos)
-        con.send("<EOF>".encode('utf-8'))
+        con.send(b"<EOF>")
 
         print('Archivo enviado')
+        os.remove(ruta_fichero)
         notificacion = con.recv(1024)
         if notificacion == b'Recibido':
             print ('Servidor ha recido el archivo.')
