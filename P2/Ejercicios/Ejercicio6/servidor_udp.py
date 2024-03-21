@@ -24,6 +24,12 @@ def iniciar_servidor(HOST, PORT):
             continue
         if comando.split()[0] == 'cd':
             ruta = comando.split()[1]
+            cambiar_directorio(addr, ruta)
+            continue
+        if comando.split()[0] == 'mv':
+            origen = comando.split()[1]
+            destino = comando.split()[2]
+            mover_fichero(addr, origen, destino)
         
 
 
