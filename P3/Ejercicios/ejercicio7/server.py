@@ -54,10 +54,12 @@ def nuevaReserva():
 @delete('/cancelar/<id:int>')
 def cancelarReserva(id):
     response.headers['Content-Type'] = 'application/json'
+    index = 0
     for i in reservas:
         if i['id'] == id:
-            reservas.remove(i)
+            reservas.pop(index)
             return json.dumps(reservas)
+        index += 1
     response.status = 404
     return json.dumps({'error': 'Not found'})
 
